@@ -2,13 +2,26 @@
 tingu is an interpreter that understands an small subset of LISP, based on
 Michael Nielsen's interpretation of Peter Norvig's beautiful LISP interpreter
 """
-#import pdb
+import pdb
 import traceback
 import sys
 
 isa = isinstance
 Symbol = str
 
+#============================================================================================ 
+# Redefining some operators
+
+def addn(*inputs):
+    "Addition operator for n inputs"
+    return sum(inputs)
+
+def muln(*inputs):
+    "Multiplication operator for n inputs"
+    product = 1.0
+    for i in inputs:
+        product *= i
+    return product
 #============================================================================================ 
 # Environment - a sub-class of dict
 
@@ -33,9 +46,9 @@ def add_globals(env):
     import operator
     env.update(
             {
-                '+' : operator.add,
+                '+' : addn, #operator.add,
                 '-' : operator.sub,
-                '*' : operator.mul,
+                '*' : muln, #operator.mul,
                 '/' : operator.div,
                 '>' : operator.gt,
                 '<' : operator.lt,
@@ -197,6 +210,7 @@ def repl(prompt='tingu> '):
             sys.exit()
         except:
             handle_error()
+
 #============================================================================================ 
 # Load from a file and run
 
