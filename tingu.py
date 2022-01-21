@@ -5,6 +5,7 @@ Michael Nielsen's interpretation of Peter Norvig's beautiful LISP interpreter
 import pdb
 import traceback
 import sys
+import numpy as np
 
 isa = isinstance
 Symbol = str
@@ -22,6 +23,24 @@ def muln(*inputs):
     for i in inputs:
         product *= i
     return product
+
+def minus(*inputs):
+    if len(inputs) == 1:
+        return -1.0*inputs[0]
+    elif len(inputs) == 2:
+        return (inputs[0] - inputs[1])
+    else:
+        return None    #TODO This is wrong. Must throw error here.
+#============================================================================================ 
+# Extending the environment with some built in functions
+
+def mysqrt(x):
+    "Returns the square root of the number, -1 if it is negative"
+    if x < 0.0:
+        return -1.0
+    else:
+        return np.sqrt(x)
+
 #============================================================================================ 
 # Environment - a sub-class of dict
 
@@ -47,14 +66,15 @@ def add_globals(env):
     env.update(
             {
                 '+' : addn, #operator.add,
-                '-' : operator.sub,
+                '-' : minus, #operator.sub,
                 '*' : muln, #operator.mul,
                 '/' : operator.div,
                 '>' : operator.gt,
                 '<' : operator.lt,
                 '>=' : operator.ge,
                 '<=' : operator.le,
-                '=' : operator.eq
+                '=' : operator.eq,
+                'sqrt' : mysqrt
             }
     )
     env.update({ 'True': True, 'False': False})
