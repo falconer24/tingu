@@ -34,6 +34,10 @@ def minus(*inputs):
 #============================================================================================ 
 # Extending the environment with some built in functions
 
+def length(x):
+    "Return length of list"
+    return len(x)
+
 def mysqrt(x):
     "Returns the square root of the number, -1 if it is negative"
     if x < 0.0:
@@ -74,7 +78,8 @@ def add_globals(env):
                 '>=' : operator.ge,
                 '<=' : operator.le,
                 '=' : operator.eq,
-                'sqrt' : mysqrt
+                'sqrt' : mysqrt,
+                'length': length,
             }
     )
     env.update({ 'True': True, 'False': False})
